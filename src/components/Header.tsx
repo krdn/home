@@ -5,10 +5,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
+  { name: "About", href: "/about" },
   { name: "Services", href: "#services" },
-  { name: "Tech Stack", href: "#tech-stack" },
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "Team", href: "#team" },
+  { name: "Docs", href: "/docs" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "#contact" },
 ];

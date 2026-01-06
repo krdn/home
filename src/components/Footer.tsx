@@ -11,10 +11,10 @@ const footerLinks = {
   resources: [
     { name: "Blog", href: "/blog" },
     { name: "GitHub", href: "https://github.com/krdn" },
-    { name: "Documentation", href: "#" },
+    { name: "Documentation", href: "/docs" },
   ],
   company: [
-    { name: "About", href: "#" },
+    { name: "About", href: "/about" },
     { name: "Team", href: "#team" },
     { name: "Contact", href: "#contact" },
   ],
