@@ -1,0 +1,195 @@
+---
+title: "Claude API 시작하기: 실전 활용 가이드"
+description: "Anthropic의 Claude API를 활용하여 AI 기능을 구현하는 방법을 알아봅니다. 기본 사용법부터 프롬프트 엔지니어링, Tool Use까지 다룹니다."
+date: "2025-01-03"
+category: "Tutorial"
+---
+
+# Claude API 시작하기: 실전 활용 가이드
+
+Claude는 Anthropic이 개발한 AI 어시스턴트입니다. 이 글에서는 Claude API를 활용하여 애플리케이션에 AI 기능을 추가하는 방법을 알아봅니다.
+
+## API 키 발급
+
+1. [Anthropic Console](https://console.anthropic.com)에 가입
+2. API Keys 메뉴에서 새 키 생성
+3. 환경 변수로 안전하게 저장
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+## 기본 API 호출
+
+### Python 예제
+
+```python
+from anthropic import Anthropic
+
+client = Anthropic()
+
+message = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "안녕하세요!"}
+    ]
+)
+
+print(message.content[0].text)
+```
+
+### TypeScript 예제
+
+```typescript
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic();
+
+async function chat(prompt: string) {
+  const message = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    messages: [
+      { role: "user", content: prompt }
+    ]
+  });
+
+  return message.content[0].text;
+}
+```
+
+## 프롬프트 엔지니어링
+
+### System Prompt 활용
+
+System Prompt로 Claude의 역할과 행동 방식을 정의합니다.
+
+```python
+message = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    system="당신은 한국어로 응답하는 기술 문서 작성 전문가입니다. "
+           "명확하고 간결한 설명을 제공하세요.",
+    messages=[
+        {"role": "user", "content": "Docker란 무엇인가요?"}
+    ]
+)
+```
+
+### Few-shot Learning
+
+예시를 제공하여 원하는 출력 형식을 유도합니다.
+
+```python
+messages = [
+    {"role": "user", "content": "이메일: 제품 문의입니다"},
+    {"role": "assistant", "content": '{"category": "inquiry", "priority": "normal"}'},
+    {"role": "user", "content": "이메일: 긴급! 서버가 다운됐습니다"},
+    {"role": "assistant", "content": '{"category": "incident", "priority": "critical"}'},
+    {"role": "user", "content": "이메일: 결제가 안 됩니다"}
+]
+
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=100,
+    messages=messages
+)
+```
+
+## Tool Use (Function Calling)
+
+Claude가 외부 도구를 호출하도록 할 수 있습니다.
+
+```python
+tools = [
+    {
+        "name": "get_weather",
+        "description": "특정 위치의 현재 날씨를 조회합니다",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "도시 이름 (예: 서울)"
+                }
+            },
+            "required": ["location"]
+        }
+    }
+]
+
+message = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    tools=tools,
+    messages=[
+        {"role": "user", "content": "서울 날씨 어때?"}
+    ]
+)
+
+# tool_use 블록 확인 후 실제 함수 호출
+for block in message.content:
+    if block.type == "tool_use":
+        # 실제 날씨 API 호출
+        result = get_weather(block.input["location"])
+        # 결과를 Claude에게 전달
+```
+
+## Streaming 응답
+
+긴 응답을 실시간으로 받아 UX를 개선합니다.
+
+```python
+with client.messages.stream(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "긴 이야기를 해주세요"}]
+) as stream:
+    for text in stream.text_stream:
+        print(text, end="", flush=True)
+```
+
+## 비용 최적화 팁
+
+### 1. 적절한 모델 선택
+- **claude-3-haiku**: 빠르고 저렴, 간단한 작업
+- **claude-sonnet-4-20250514**: 균형잡힌 성능, 일반 용도
+- **claude-3-opus**: 최고 성능, 복잡한 작업
+
+### 2. max_tokens 조절
+필요한 만큼만 설정하여 비용 절감
+
+### 3. 캐싱 활용
+동일한 요청은 캐시하여 API 호출 감소
+
+```python
+import hashlib
+from functools import lru_cache
+
+@lru_cache(maxsize=100)
+def cached_claude_call(prompt_hash):
+    # API 호출
+    pass
+```
+
+## 에러 핸들링
+
+```python
+from anthropic import APIError, RateLimitError
+
+try:
+    response = client.messages.create(...)
+except RateLimitError:
+    # 재시도 로직
+    time.sleep(60)
+    response = client.messages.create(...)
+except APIError as e:
+    logging.error(f"API Error: {e}")
+```
+
+## 마무리
+
+Claude API는 다양한 AI 기능을 손쉽게 구현할 수 있게 해줍니다. Tool Use와 Streaming을 활용하면 더욱 강력한 애플리케이션을 만들 수 있습니다.
+
+다음 글에서는 Claude를 활용한 RAG(Retrieval-Augmented Generation) 구현을 다루겠습니다.
