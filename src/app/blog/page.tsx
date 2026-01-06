@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 import Header from "@/components/Header";
@@ -5,9 +6,17 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-export const metadata = {
-  title: "Blog - KRDN",
-  description: "AI, 자동화, 개발에 관한 인사이트를 공유합니다",
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "AI, 자동화, 개발에 관한 인사이트를 공유합니다. Claude API, n8n 워크플로우, Docker 배포 등 다양한 주제를 다룹니다.",
+  openGraph: {
+    title: "KRDN Blog",
+    description: "AI, 자동화, 개발에 관한 인사이트를 공유합니다.",
+    url: "https://krdn.kr/blog",
+  },
+  alternates: {
+    canonical: "https://krdn.kr/blog",
+  },
 };
 
 export default function BlogPage() {

@@ -1,7 +1,21 @@
+import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "KRDN은 AI Agent와 워크플로우 자동화를 통해 반복적인 업무를 혁신하고, 개발자와 기업이 더 창의적인 일에 집중할 수 있도록 돕습니다.",
+  openGraph: {
+    title: "About KRDN",
+    description: "AI로 자동화를 혁신하는 KRDN의 미션과 가치를 소개합니다.",
+    url: "https://krdn.kr/about",
+  },
+  alternates: {
+    canonical: "https://krdn.kr/about",
+  },
+};
 
 const timeline = [
   {

@@ -21,13 +21,30 @@ export async function generateMetadata({ params }: Props) {
 
   if (!post) {
     return {
-      title: "Post Not Found - KRDN",
+      title: "Post Not Found",
     };
   }
 
   return {
-    title: `${post.title} - KRDN Blog`,
+    title: post.title,
     description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `https://krdn.kr/blog/${slug}`,
+      type: "article",
+      publishedTime: post.date,
+      authors: ["KRDN"],
+      tags: [post.category],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
+    alternates: {
+      canonical: `https://krdn.kr/blog/${slug}`,
+    },
   };
 }
 

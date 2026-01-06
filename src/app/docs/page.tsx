@@ -1,8 +1,22 @@
+import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Documentation",
+  description: "KRDN 서비스 사용법과 가이드를 확인하세요. Gonsai2, News Sentiment Analyzer, n8n Workflows 등의 문서를 제공합니다.",
+  openGraph: {
+    title: "KRDN Documentation",
+    description: "KRDN 서비스 사용법과 가이드를 확인하세요.",
+    url: "https://krdn.kr/docs",
+  },
+  alternates: {
+    canonical: "https://krdn.kr/docs",
+  },
+};
 
 const services = [
   {
