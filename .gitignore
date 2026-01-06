@@ -43,3 +43,6 @@ next-env.d.ts
 # Test artifacts
 .playwright-mcp/
 images/
+
+# Contact form messages
+data/

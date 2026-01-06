@@ -32,6 +32,10 @@ COPY --from=builder /app/content ./content
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
+# Create data directory for contact form messages
+RUN mkdir -p data/messages
+RUN chown -R nextjs:nodejs data
+
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
