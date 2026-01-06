@@ -1,0 +1,25 @@
+services:
+  krdn-home:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: krdn-home
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    environment:
+      - NODE_ENV=production
+      - PORT=3100
+    networks:
+      - krdn-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3100/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  krdn-network:
+    external: true
+    name: krdn-network
