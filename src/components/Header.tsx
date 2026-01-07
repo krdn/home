@@ -6,17 +6,18 @@ import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "About", href: "/about" },
-  { name: "Services", href: "#services" },
+  { name: "Services", href: "/#services" },
+  { name: "YouTube", href: "/#youtube" },
   { name: "Docs", href: "/docs" },
   { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "#contact" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 isolate bg-background/80 backdrop-blur-md border-b border-border">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
@@ -69,29 +70,32 @@ export default function Header() {
       </nav>
 
       {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden">
-          <div className="space-y-1 px-4 pb-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className="pt-2">
-              <Button asChild variant="default" className="w-full bg-gradient-to-r from-primary to-accent">
-                <a href="https://github.com/krdn" target="_blank" rel="noopener noreferrer">
-                  GitHub
-                </a>
-              </Button>
-            </div>
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="space-y-1 px-4 pb-4">
+          {navigation.map((item, index) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="block rounded-lg px-3 py-2.5 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors touch-manipulation"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <div className="pt-3">
+            <Button asChild variant="default" className="w-full bg-gradient-to-r from-primary to-accent h-11 text-base">
+              <a href="https://github.com/krdn" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+            </Button>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

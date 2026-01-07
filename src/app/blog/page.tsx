@@ -23,8 +23,9 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <main className="min-h-screen">
+    <>
       <Header />
+      <main className="min-h-screen relative z-[-1]">
 
       <section className="pt-32 pb-24 bg-background">
         <div className="mx-auto max-w-4xl px-4 lg:px-8">
@@ -95,8 +96,8 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
-
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

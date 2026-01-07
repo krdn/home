@@ -48,9 +48,34 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-// Simple markdown to HTML converter
+// HTML 엔티티 이스케이프 (XSS 방지)
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// 안전한 URL인지 검증 (javascript: 등 차단)
+function isSafeUrl(url: string): boolean {
+  const trimmed = url.trim().toLowerCase();
+  // javascript:, data:, vbscript: 등 위험한 프로토콜 차단
+  if (trimmed.startsWith('javascript:')) return false;
+  if (trimmed.startsWith('vbscript:')) return false;
+  if (trimmed.startsWith('data:') && !trimmed.startsWith('data:image/')) return false;
+  return true;
+}
+
+// Simple markdown to HTML converter (XSS 방지 적용)
 function parseMarkdown(content: string): string {
-  let html = content;
+  // 먼저 HTML 태그를 이스케이프 (마크다운 문법 제외)
+  let html = content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // script 태그 제거
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // style 태그 제거
+    .replace(/on\w+\s*=/gi, '') // 이벤트 핸들러 속성 제거
+    .replace(/<iframe\b[^>]*>/gi, ''); // iframe 제거
 
   // Headers
   html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold mt-8 mb-4 text-foreground">$1</h3>');
@@ -62,11 +87,17 @@ function parseMarkdown(content: string): string {
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-  // Code blocks
-  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="bg-card rounded-lg p-4 overflow-x-auto my-4 border border-border"><code class="text-sm text-muted-foreground">$2</code></pre>');
+  // Code blocks (내용은 이스케이프)
+  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+    const escapedCode = escapeHtml(code);
+    return `<pre class="bg-card rounded-lg p-4 overflow-x-auto my-4 border border-border"><code class="text-sm text-muted-foreground">${escapedCode}</code></pre>`;
+  });
 
-  // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">$1</code>');
+  // Inline code (내용은 이스케이프)
+  html = html.replace(/`([^`]+)`/g, (_, code) => {
+    const escapedCode = escapeHtml(code);
+    return `<code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">${escapedCode}</code>`;
+  });
 
   // Blockquotes
   html = html.replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-primary pl-4 my-4 italic text-muted-foreground">$1</blockquote>');
@@ -77,8 +108,15 @@ function parseMarkdown(content: string): string {
   html = html.replace(/^\d+\. (.*$)/gim, '<li class="ml-6 list-decimal">$1</li>');
   html = html.replace(/^- (.*$)/gim, '<li class="ml-6 list-disc">$1</li>');
 
-  // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
+  // Links (안전한 URL만 허용)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+    if (!isSafeUrl(url)) {
+      return escapeHtml(text); // 위험한 URL은 텍스트만 표시
+    }
+    const escapedText = escapeHtml(text);
+    const escapedUrl = encodeURI(url);
+    return `<a href="${escapedUrl}" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">${escapedText}</a>`;
+  });
 
   // Paragraphs
   html = html.split('\n\n').map(paragraph => {
@@ -104,10 +142,10 @@ export default async function BlogPostPage({ params }: Props) {
   const contentHtml = parseMarkdown(post.content);
 
   return (
-    <main className="min-h-screen">
+    <>
       <Header />
-
-      <article className="pt-32 pb-24 bg-background">
+      <main className="min-h-screen relative z-[-1]">
+        <article className="pt-32 pb-24 bg-background">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           {/* Back button */}
           <Button variant="ghost" size="sm" className="mb-8" asChild>
@@ -160,9 +198,9 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
           </footer>
         </div>
-      </article>
-
+        </article>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

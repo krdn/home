@@ -106,8 +106,9 @@ const guides = [
 
 export default function DocsPage() {
   return (
-    <main className="min-h-screen">
+    <>
       <Header />
+      <main className="min-h-screen relative z-[-1]">
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4">
@@ -275,8 +276,8 @@ export default function DocsPage() {
           </div>
         </div>
       </section>
-
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
