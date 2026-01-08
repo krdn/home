@@ -25,7 +25,7 @@ export default function BlogPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen relative z-[-1]">
+      <main className="min-h-screen relative">
 
       <section className="pt-32 pb-24 bg-background">
         <div className="mx-auto max-w-4xl px-4 lg:px-8">

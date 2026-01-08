@@ -84,7 +84,7 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen relative z-[-1]">
+      <main className="min-h-screen relative">
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4">

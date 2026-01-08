@@ -108,7 +108,7 @@ export default function DocsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen relative z-[-1]">
+      <main className="min-h-screen relative">
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4">
@@ -172,9 +172,9 @@ export default function DocsPage() {
           <h2 className="text-2xl font-bold mb-8">가이드</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {guides.map((guide, index) => (
-              <Card key={index} className="bg-card/50 border-border/50 hover:border-primary/50 transition-colors cursor-pointer group">
+              <Card key={index} className="bg-card/50 border-border/50">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-4">
                     {guide.icon}
                   </div>
                   <h3 className="font-semibold mb-2">{guide.title}</h3>
@@ -205,10 +205,10 @@ export default function DocsPage() {
                 <CardContent>
                   <ul className="space-y-3">
                     {service.docs.map((doc, docIndex) => (
-                      <li key={docIndex} className="flex items-start gap-3 group cursor-pointer">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 group-hover:scale-150 transition-transform" />
+                      <li key={docIndex} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
                         <div>
-                          <div className="font-medium text-sm group-hover:text-primary transition-colors">
+                          <div className="font-medium text-sm">
                             {doc.title}
                           </div>
                           <div className="text-xs text-muted-foreground">

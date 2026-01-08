@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-screen relative z-[-1]">
+      <main className="min-h-screen relative">
         <article className="pt-32 pb-24 bg-background">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           {/* Back button */}

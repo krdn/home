@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen relative z-[-1]">
+      <main className="min-h-screen relative">
         <Hero />
       <Services />
       <TechStack />
