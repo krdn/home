@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Documentation",

@@ -5,30 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Play, Youtube, ExternalLink } from "lucide-react";
 
-const videos = [
-  {
-    id: "1",
-    title: "AI 자동화 입문 가이드",
-    description: "n8n과 AI를 활용한 업무 자동화 시작하기",
-    thumbnail: "https://img.youtube.com/vi/VIDEO_ID_1/maxresdefault.jpg",
-    category: "Tutorial",
-  },
-  {
-    id: "2",
-    title: "Claude API 활용법",
-    description: "Claude API를 활용한 실전 프로젝트 구축",
-    thumbnail: "https://img.youtube.com/vi/VIDEO_ID_2/maxresdefault.jpg",
-    category: "Guide",
-  },
-  {
-    id: "3",
-    title: "워크플로우 자동화 패턴",
-    description: "실무에서 바로 적용 가능한 자동화 패턴",
-    thumbnail: "https://img.youtube.com/vi/VIDEO_ID_3/maxresdefault.jpg",
-    category: "Tutorial",
-  },
-];
-
 export default function YouTube() {
   const channelUrl = "https://www.youtube.com/@krdn-gon";
 

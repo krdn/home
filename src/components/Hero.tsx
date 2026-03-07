@@ -1,15 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <section className="relative z-0 min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient */}
@@ -32,7 +25,7 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className={`relative z-10 mx-auto max-w-7xl px-4 py-32 text-center transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-32 text-center animate-fade-in-up">
         {/* Badge */}
         <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-2 backdrop-blur-sm">
           <span className="relative flex h-2 w-2">

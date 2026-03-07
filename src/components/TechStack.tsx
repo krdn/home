@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
 interface Technology {
@@ -97,9 +98,11 @@ export default function TechStack() {
                   >
                     <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-background group-hover/item:scale-110 transition-transform">
                       {tech.icon ? (
-                        <img
+                        <Image
                           src={tech.icon}
                           alt={tech.name}
+                          width={32}
+                          height={32}
                           className="w-8 h-8 object-contain"
                           loading="lazy"
                         />
